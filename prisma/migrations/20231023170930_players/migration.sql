@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "Player" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "team" INTEGER NOT NULL DEFAULT 0,
+    "roomId" INTEGER NOT NULL,
+    CONSTRAINT "Player_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "Room" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
