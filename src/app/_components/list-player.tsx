@@ -1,24 +1,17 @@
-"use client";
-
-import { api } from "@/trpc/react";
+import { type Player } from "@prisma/client";
 
 type PlayerListProps = {
-  roomId: number;
+  players: Player[];
 }
 
-export function PlayerList({ roomId }: PlayerListProps) {
-  const players = api.room.getPlayers.useQuery({
-    roomId: roomId
-  })
-
+export function PlayerList({ players }: PlayerListProps) {
   return (
     <div>
       <ul>
-        {(!!players?.data?.length) && players.data.map((player) => {
+        {(!!players.length) && players.map((player) => {
           return <li key={player.name}>{player.name}</li>
         })}
       </ul>
-
     </div>
   );
 }

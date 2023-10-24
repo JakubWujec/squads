@@ -1,6 +1,7 @@
 import { AddPlayer } from "@/app/_components/add-player";
 import { PlayerList } from "@/app/_components/list-player";
 import { api } from "@/trpc/server";
+import { PlayerSelection } from "./PlayerSelection";
 
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -12,8 +13,8 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         {room ? <p>Room: {room.name}</p> : <p>Loading..</p>}
         <AddPlayer roomId={room.id}></AddPlayer>
-        <PlayerList roomId={room.id}></PlayerList>
+        <PlayerSelection roomId={room.id}></PlayerSelection>
       </div>
-    </main>
+    </main >
   );
 }
