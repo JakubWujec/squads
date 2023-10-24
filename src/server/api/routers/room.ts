@@ -6,7 +6,6 @@ export const roomRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       return ctx.db.room.create({
         data: {
@@ -14,6 +13,35 @@ export const roomRouter = createTRPCRouter({
         },
       });
 
+    }),
+
+  addPlayer: publicProcedure
+    .input(z.object({ name: z.string().min(1), roomId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+
+      await ctx.db.player.create({
+        data: {
+          name: input.name,
+          roomId: input.roomId
+        }
+      })
+
+      return ctx.db.room.findUniqueOrThrow({
+        where: {
+          id: input.roomId
+        }
+      });
+    }),
+
+  getPlayers: publicProcedure
+    .input(z.object({ roomId: z.number().min(1) }))
+    .query(({ ctx, input }) => {
+
+      return ctx.db.player.findMany({
+        where: {
+          roomId: input.roomId
+        }
+      });
     }),
 
   getOne: publicProcedure
