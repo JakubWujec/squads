@@ -11,6 +11,7 @@ type PlayerSelectionProps = {
 
 export function PlayerSelection({ roomId }: PlayerSelectionProps) {
   const [filterText, setFilterText] = useState('');
+  const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 
   const getPlayers = api.room.getPlayers.useQuery({
     roomId: roomId
@@ -21,7 +22,7 @@ export function PlayerSelection({ roomId }: PlayerSelectionProps) {
   return (
     <>
       <SearchBar filterText={filterText} onFilterTextChange={(text) => { setFilterText(text); console.log('text', text) }}></SearchBar>
-      {!!filteredPlayers.length && <PlayerList players={filteredPlayers}></PlayerList>}
+      <PlayerList players={filteredPlayers} selectedPlayerId={selectedPlayerId} setSelectedPlayerId={setSelectedPlayerId}></PlayerList>
     </>
   );
 }
