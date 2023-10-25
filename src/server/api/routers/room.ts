@@ -55,4 +55,24 @@ export const roomRouter = createTRPCRouter({
       });
     }),
 
+  assignPlayerToATeam: publicProcedure
+    .input(z.object({ playerId: z.number(), roomId: z.number(), teamId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.player.update({
+        data: {
+          team: input.teamId,
+        },
+        where: {
+          id: input.playerId,
+          roomId: input.roomId
+        }
+      })
+
+      return ctx.db.room.findUniqueOrThrow({
+        where: {
+          id: input.roomId
+        }
+      });
+    }),
+
 });
