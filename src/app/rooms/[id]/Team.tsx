@@ -8,15 +8,17 @@ type TeamProps = {
 export function Team({ players, teamId }: TeamProps) {
 
   return (
-    <div>
+    <div className="flex flex-col">
       <h2>Team {teamId}</h2>
+
       {players.map((player) => {
         return (
-          <div key={player.name}>
+          <div key={player.name} className={`border-white border-2 mb-2 p-4`}>
             {player.name}
           </div>
         )
       })}
+
     </div >
   );
 }
