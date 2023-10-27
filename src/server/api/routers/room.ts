@@ -75,4 +75,29 @@ export const roomRouter = createTRPCRouter({
       });
     }),
 
+  enterRoom: publicProcedure
+    .input(z.object({ roomId: z.number(), password: z.string().optional() }))
+    .mutation(async ({ ctx, input }) => {
+
+      const findRoom = await ctx.db.room.findUnique({
+        where: {
+          id: input.roomId
+        }
+      })
+
+      if (findRoom?.password === input.password) {
+        return {
+          message: "Git gut",
+          token: 'zfkdsfklsew12',
+          role: "host"
+        }
+      }
+
+      return {
+        message: "No bueno",
+        role: "guest",
+        token: null,
+      }
+    }),
+
 });
