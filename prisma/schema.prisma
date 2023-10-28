@@ -15,15 +15,6 @@ model Player {
   Room   Room   @relation(fields: [roomId], references: [id])
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-
-  @@index([name])
-}
-
 model Room {
   id        Int        @id @default(autoincrement())
   name      String
