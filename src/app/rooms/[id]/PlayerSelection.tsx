@@ -5,12 +5,14 @@ import { SearchBar } from "@/app/_components/search-player";
 import { useState } from "react";
 import { api } from "@/trpc/react";
 import { Team } from "./Team";
-
+import { useRouter } from "next/navigation";
 type PlayerSelectionProps = {
   roomId: number;
+  token: string;
 }
 
-export function PlayerSelection({ roomId }: PlayerSelectionProps) {
+export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
+  const router = useRouter();
   const [filterText, setFilterText] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 
@@ -21,6 +23,7 @@ export function PlayerSelection({ roomId }: PlayerSelectionProps) {
   const assignPlayerToATeam = api.room.assignPlayerToATeam.useMutation({
     onSuccess: () => {
       setSelectedPlayerId(null);
+      router.refresh();
     },
   });
 
@@ -29,7 +32,7 @@ export function PlayerSelection({ roomId }: PlayerSelectionProps) {
     assignPlayerToATeam.mutate({
       playerId,
       roomId,
-      teamId
+      token
     })
   }
 

@@ -10,8 +10,11 @@ export function EnterRoom() {
   const [password, setPassword] = useState("")
   const [roomId, setRoomId] = useState(0)
 
-  const createRoom = api.room.enterRoom.useMutation({
-    onSuccess: () => {
+  const enterRoom = api.room.enterRoom.useMutation({
+    onSuccess: (data) => {
+      if (data.token) {
+        router.push(`/rooms/${roomId}/${data.token}`)
+      }
       router.push(`/rooms/${roomId}`)
     },
   });
@@ -20,7 +23,7 @@ export function EnterRoom() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        createRoom.mutate({ roomId, password });
+        enterRoom.mutate({ roomId, password });
       }}
       className="flex flex-col gap-2"
     >
@@ -41,9 +44,9 @@ export function EnterRoom() {
       <button
         type="submit"
         className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-        disabled={createRoom.isLoading}
+        disabled={enterRoom.isLoading}
       >
-        {createRoom.isLoading ? "Submitting..." : "Submit"}
+        {enterRoom.isLoading ? "Submitting..." : "Submit"}
       </button>
     </form>
   );

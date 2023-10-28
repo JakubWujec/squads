@@ -1,4 +1,13 @@
 -- CreateTable
+CREATE TABLE "Player" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "team" INTEGER NOT NULL DEFAULT 0,
+    "roomId" INTEGER NOT NULL,
+    CONSTRAINT "Player_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "Room" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "Post" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
@@ -10,7 +19,10 @@ CREATE TABLE "Post" (
 CREATE TABLE "Room" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
-    "password" TEXT,
+    "password1" TEXT NOT NULL,
+    "password2" TEXT NOT NULL,
+    "hash1" TEXT NOT NULL,
+    "hash2" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

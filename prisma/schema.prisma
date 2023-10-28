@@ -1,40 +1,45 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
-}
-
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([name])
-}
-
-model Room {
-    id           Int              @id @default(autoincrement())
-    name         String
-    password     String? 
-    createdAt    DateTime @default(now())
-    
-    players      Player[]
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Player {
-    id           Int              @id @default(autoincrement())
-    name         String
-    team         Int              @default(0)
-
-    room         Room             @relation(fields: [roomId], references: [id])
-    roomId       Int
+  id     Int    @id @default(autoincrement())
+  name   String
+  team   Int    @default(0)
+  roomId Int
+  Room   Room   @relation(fields: [roomId], references: [id])
 }
 
-// team -> 0=noteam, 1=firstteam 2=secondTeam
+model Post {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@index([name])
+}
+
+model Room {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  Player    Player[]
+  RoomAuth  RoomAuth[]
+}
+
+
+model RoomAuth {
+  id        Int        @id @default(autoincrement())
+  password  String
+  token     String
+  role      String
+
+  roomId Int
+  Room   Room   @relation(fields: [roomId], references: [id])
+}
+
