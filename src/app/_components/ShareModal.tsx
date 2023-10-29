@@ -2,6 +2,7 @@
 
 import { type ReactNode, useState } from 'react'
 import { Dialog } from '@headlessui/react'
+import ShareLink from './ShareLink';
 
 type ShareModalProps = {
   link: string;
@@ -34,6 +35,7 @@ export default function ShareModal({ link }: ShareModalProps) {
               <Dialog.Title>Share</Dialog.Title>
               <Dialog.Description>
                 Share with your friend to pick teams.
+                <ShareLink linkToShare={link}></ShareLink>
                 <a href={link}>LINK</a>
               </Dialog.Description>
               <button onClick={() => setIsOpen(false)}>Close</button>
