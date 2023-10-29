@@ -1,5 +1,5 @@
 import { type Player } from "@prisma/client";
-import { PlayerItem } from "../rooms/[id]/PlayerItem";
+import { PlayerItem } from "./PlayerItem";
 
 type PlayerListProps = {
   players: Player[];

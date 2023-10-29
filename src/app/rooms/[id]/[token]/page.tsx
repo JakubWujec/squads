@@ -1,6 +1,6 @@
 import { AddPlayer } from "@/app/_components/add-player";
 import RoomNavigation from "@/app/_components/roomNavigation";
-import { PlayerSelection } from "@/app/rooms/[id]/PlayerSelection";
+import { PlayerSelection } from "@/app/_components/PlayerSelection";
 import { api } from "@/trpc/server";
 
 
