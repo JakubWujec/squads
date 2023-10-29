@@ -1,11 +1,13 @@
 "use client"
 
-import { PlayerList } from "@/app/_components/list-player";
 import { SearchBar } from "@/app/_components/search-player";
 import { useState } from "react";
 import { api } from "@/trpc/react";
 import { Team } from "./Team";
 import { useRouter } from "next/navigation";
+import { PlayerItem } from "./PlayerItem";
+import { type Player } from "@prisma/client";
+
 type PlayerSelectionProps = {
   roomId: number;
   token: string;
@@ -20,6 +22,19 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
     roomId: roomId
   })
 
+  const players: Player[] = getPlayers.data ?? [];
+  const noTeamPlayers = players.filter(player => player.team === 0)
+  const firstTeamPlayers = players.filter(player => player.team === 1)
+  const secondTeamPlayers = players.filter(player => player.team === 2)
+  const filteredPlayers = noTeamPlayers.filter(player => player.name.toLowerCase().includes(filterText.toLowerCase()));
+  const selectedPlayer = players.find(player => player.id === selectedPlayerId);
+
+  const handlePlayerSelected = (player: Player | undefined) => {
+    if (player && player.team === 0) {
+      setSelectedPlayerId(player.id)
+    }
+  }
+
   const assignPlayerToATeam = api.room.assignPlayerToATeam.useMutation({
     onSuccess: () => {
       setSelectedPlayerId(null);
@@ -27,27 +42,33 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
     },
   });
 
-  const lockHandler = (playerId: number, teamId: number) => {
-    console.log(playerId, teamId)
+  const handleLockPlayer = (player: Player) => {
     assignPlayerToATeam.mutate({
-      playerId,
+      playerId: player.id,
       roomId,
       token
     })
   }
 
-  const firstTeamPlayers = getPlayers.data?.filter(player => player.team === 1) ?? []
-  const secondTeamPlayers = getPlayers.data?.filter(player => player.team === 2) ?? []
-
-  const filteredPlayers = getPlayers.data?.filter(player => player.name.toLowerCase().includes(filterText.toLowerCase())) ?? [];
 
   return (
     <div className="w-full flex flex-row justify-between">
       <Team teamId={1} players={firstTeamPlayers}></Team>
       <div>
         <SearchBar filterText={filterText} onFilterTextChange={(text) => { setFilterText(text); console.log('text', text) }}></SearchBar>
-        <PlayerList players={filteredPlayers} selectedPlayerId={selectedPlayerId} setSelectedPlayerId={setSelectedPlayerId}></PlayerList>
-        {selectedPlayerId != null && <button disabled={selectedPlayerId == null} onClick={() => lockHandler(selectedPlayerId, 1)}>LOCK</button>}
+        <div className="flex flex-wrap gap-2">
+          {filteredPlayers.map((player) => {
+            return (
+              <PlayerItem
+                player={player}
+                className={selectedPlayerId === player.id ? 'border-4 border-green-400' : player.team != 0 ? 'bg-gray-500' : ''}
+                key={player.name}
+                onClickHandler={handlePlayerSelected}></PlayerItem>
+            )
+          })}
+        </div>
+        {selectedPlayerId != null && <button disabled={selectedPlayerId == null}
+          onClick={() => handleLockPlayer(selectedPlayer!)}>LOCK</button>}
       </div>
       <Team teamId={2} players={secondTeamPlayers}></Team>
     </div>

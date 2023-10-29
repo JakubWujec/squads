@@ -1,4 +1,5 @@
 import { type Player } from "@prisma/client";
+import { PlayerItem } from "../rooms/[id]/PlayerItem";
 
 type PlayerListProps = {
   players: Player[];
@@ -6,10 +7,17 @@ type PlayerListProps = {
   setSelectedPlayerId: (playerId: number) => void;
 }
 
+const alreadyPickedClass = 'bg-gray'
+const selectedClass = 'border-4 border-green-400'
+const canBePicked = ''
+
 export function PlayerList({ players, setSelectedPlayerId, selectedPlayerId }: PlayerListProps) {
 
-  const onClickHandler = (playerId: number) => {
-    setSelectedPlayerId(playerId);
+  const onClickHandler = (player: Player) => {
+    if (player.team === 0) {
+      setSelectedPlayerId(player.id);
+    }
+
   }
 
   if (!players.length) {
@@ -17,19 +25,17 @@ export function PlayerList({ players, setSelectedPlayerId, selectedPlayerId }: P
   }
 
   return (
-    <div>
-      <ul className="flex flex-wrap gap-2">
-        {players.map((player) => {
-          return (
-            <li
-              className={`${selectedPlayerId === player.id ? 'border-green-400' : 'white'} border-2 p-4`}
-              key={player.name}
-              onClick={() => onClickHandler(player.id)}>
-              {player.name}
-            </li>
-          )
-        })}
-      </ul>
+    <div className="flex flex-wrap gap-2">
+      {players.map((player) => {
+        return (
+          <PlayerItem
+            player={player}
+            className={selectedPlayerId === player.id ? selectedClass : player.team == 0 ? alreadyPickedClass : canBePicked}
+            key={player.name}
+            onClickHandler={onClickHandler}></PlayerItem>
+        )
+      })}
     </div>
+
   );
 }
