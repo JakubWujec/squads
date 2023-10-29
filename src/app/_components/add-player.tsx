@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { api } from "@/trpc/react";
@@ -10,13 +9,13 @@ type AddPlayerProps = {
 }
 
 export function AddPlayer({ roomId }: AddPlayerProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const [name, setName] = useState("");
 
   const createPlayer = api.room.addPlayer.useMutation({
-    onSuccess: () => {
-      router.refresh();
+    onSuccess: async () => {
       setName("");
+      await utils.room.getPlayers.invalidate();
     },
   });
 

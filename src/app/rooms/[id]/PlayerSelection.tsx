@@ -1,12 +1,11 @@
 "use client"
 
 import { SearchBar } from "@/app/_components/search-player";
-import { useState } from "react";
 import { api } from "@/trpc/react";
-import { Team } from "./Team";
-import { useRouter } from "next/navigation";
-import { PlayerItem } from "./PlayerItem";
 import { type Player } from "@prisma/client";
+import { useState } from "react";
+import { PlayerItem } from "./PlayerItem";
+import { Team } from "./Team";
 
 type PlayerSelectionProps = {
   roomId: number;
@@ -14,7 +13,7 @@ type PlayerSelectionProps = {
 }
 
 export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const [filterText, setFilterText] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
 
@@ -36,9 +35,9 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
   }
 
   const assignPlayerToATeam = api.room.assignPlayerToATeam.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       setSelectedPlayerId(null);
-      router.refresh();
+      await utils.room.getPlayers.invalidate();
     },
   });
 
