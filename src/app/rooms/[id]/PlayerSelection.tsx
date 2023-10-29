@@ -37,7 +37,7 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
   const assignPlayerToATeam = api.room.assignPlayerToATeam.useMutation({
     onSuccess: async () => {
       setSelectedPlayerId(null);
-      await utils.room.getPlayers.invalidate();
+      await utils.room.getPlayers.invalidate({ roomId: roomId });
     },
   });
 

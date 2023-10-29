@@ -15,7 +15,7 @@ export function AddPlayer({ roomId }: AddPlayerProps) {
   const createPlayer = api.room.addPlayer.useMutation({
     onSuccess: async () => {
       setName("");
-      await utils.room.getPlayers.invalidate();
+      await utils.room.getPlayers.invalidate({ roomId: roomId });
     },
   });
 
