@@ -1,5 +1,6 @@
 import { AddPlayer } from "@/app/_components/add-player";
 import RoomNavigation from "@/app/_components/roomNavigation";
+import ShareModal from "@/app/_components/ShareModal";
 import { PlayerSelection } from "@/app/rooms/[id]/PlayerSelection";
 import { api } from "@/trpc/server";
 
@@ -12,6 +13,7 @@ export default async function Page({ params }: { params: { id: string, token: st
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <RoomNavigation title={room.name}></RoomNavigation>
+      <ShareModal link={`/rooms/${roomId}/${params.token}`}></ShareModal>
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1>You are {role}</h1>
         {room ? <p>Room: {room.name}</p> : <p>Loading..</p>}
