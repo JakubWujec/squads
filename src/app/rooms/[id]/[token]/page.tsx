@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { id: string, token: st
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-row gap-2">
         <ShareModal link={`/rooms/${roomId}/${params.token}`}></ShareModal>
         <CustomModal buttonText="Add player"><AddPlayer roomId={room.id}></AddPlayer></CustomModal>
       </div>

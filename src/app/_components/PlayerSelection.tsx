@@ -6,6 +6,7 @@ import { type Player } from "@prisma/client";
 import { useState } from "react";
 import { PlayerItem } from "./PlayerItem";
 import { Team } from "./Team";
+import Button from "./Button";
 
 type PlayerSelectionProps = {
   roomId: number;
@@ -51,11 +52,11 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
 
 
   return (
-    <div className="w-full flex flex-row justify-between">
+    <div className="w-full gap-4 flex flex-row justify-between border-white border-2 p-4">
       <Team teamId={1} players={firstTeamPlayers}></Team>
       <div>
         <SearchBar filterText={filterText} onFilterTextChange={(text) => { setFilterText(text); console.log('text', text) }}></SearchBar>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 border-2 border-white p-2">
           {filteredPlayers.map((player) => {
             return (
               <PlayerItem
@@ -66,8 +67,7 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
             )
           })}
         </div>
-        {selectedPlayerId != null && <button disabled={selectedPlayerId == null}
-          onClick={() => handleLockPlayer(selectedPlayer!)}>LOCK</button>}
+        <Button disabled={selectedPlayerId == null} onClick={() => handleLockPlayer(selectedPlayer!)}>LOCK</Button>
       </div>
       <Team teamId={2} players={secondTeamPlayers}></Team>
     </div>
