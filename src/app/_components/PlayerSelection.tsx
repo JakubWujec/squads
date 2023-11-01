@@ -23,7 +23,7 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
   })
 
   const players: Player[] = getPlayers.data ?? [];
-  const noTeamPlayers = players.filter(player => player.team === 0)
+  const noTeamPlayers: Player[] = players.filter(player => player.team === 0)
   const firstTeamPlayers = players.filter(player => player.team === 1)
   const secondTeamPlayers = players.filter(player => player.team === 2)
   const filteredPlayers = noTeamPlayers.filter(player => player.name.toLowerCase().includes(filterText.toLowerCase()));
@@ -54,9 +54,11 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
   return (
     <div className="w-full gap-4 flex flex-row justify-between border-white border-2 p-4">
       <Team teamId={1} players={firstTeamPlayers}></Team>
-      <div>
-        <SearchBar filterText={filterText} onFilterTextChange={(text) => { setFilterText(text); console.log('text', text) }}></SearchBar>
-        <div className="flex flex-wrap gap-2 border-2 border-white p-2">
+      <div className="flex flex-col border-2 border-white p-2 grow">
+        <div className="flex justify-end mb-2">
+          <SearchBar filterText={filterText} onFilterTextChange={(text) => { setFilterText(text); console.log('text', text) }}></SearchBar>
+        </div>
+        <div className="flex flex-start flex-wrap gap-x-2 border-2 border-white p-2 grow">
           {filteredPlayers.map((player) => {
             return (
               <PlayerItem
@@ -67,7 +69,9 @@ export function PlayerSelection({ roomId, token }: PlayerSelectionProps) {
             )
           })}
         </div>
-        <Button disabled={selectedPlayerId == null} onClick={() => handleLockPlayer(selectedPlayer!)}>LOCK</Button>
+        <div className="flex flex-row justify-center items-center p-2 border-2 border-white">
+          <Button disabled={selectedPlayerId == null} onClick={() => handleLockPlayer(selectedPlayer!)}>LOCK</Button>
+        </div>
       </div>
       <Team teamId={2} players={secondTeamPlayers}></Team>
     </div>

@@ -8,7 +8,7 @@ type TeamProps = {
 export function Team({ players, teamId }: TeamProps) {
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col border-2 border-white p-2">
       <h2>Team {teamId}</h2>
 
       {players.map((player) => {

@@ -11,7 +11,7 @@ type PlayerItem = {
 export function PlayerItem({ player, onClickHandler, className }: PlayerItem) {
   return (
     <div
-      className={`bg-white text-black border-4 p-4 ${className}`}
+      className={`h-min bg-white text-black border-4 p-4 ${className}`}
       onClick={() => onClickHandler(player)}>
       {player.name}
     </div>
