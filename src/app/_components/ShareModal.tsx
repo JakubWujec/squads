@@ -3,6 +3,7 @@
 import { type ReactNode, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import ShareLink from './ShareLink';
+import QRCode from "react-qr-code";
 
 type ShareModalProps = {
   link: string;
@@ -32,11 +33,12 @@ export default function ShareModal({ link }: ShareModalProps) {
           {/* Container to center the panel */}
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4 ">
             <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-              <Dialog.Title>Share</Dialog.Title>
+              <Dialog.Title>Share with your friend to pick teams.</Dialog.Title>
               <Dialog.Description>
-                Share with your friend to pick teams.
                 <ShareLink linkToShare={link}></ShareLink>
-                <a href={link}>LINK</a>
+                <div style={{ background: 'white', padding: '16px' }}>
+                  <QRCode value={link} />
+                </div>
               </Dialog.Description>
               <button onClick={() => setIsOpen(false)}>Close</button>
             </Dialog.Panel>
