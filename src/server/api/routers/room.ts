@@ -13,7 +13,7 @@ export const roomRouter = createTRPCRouter({
         },
       });
 
-      await ctx.db.roomAuth.create({
+      const roomAuth = await ctx.db.roomAuth.create({
         data: {
           role: "HOST",
           token: "hash1",
@@ -31,7 +31,10 @@ export const roomRouter = createTRPCRouter({
         }
       })
 
-      return room;
+      return {
+        room,
+        roomAuth
+      }
 
     }),
 
